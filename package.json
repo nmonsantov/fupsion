@@ -1,0 +1,19 @@
+{
+  "name": "fupsion",
+  "version": "1.0.0",
+  "description": "Fupsion company",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmonsantov/fupsion.git"
+  },
+  "author": "Nelson Monsanto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nmonsantov/fupsion/issues"
+  },
+  "homepage": "https://github.com/nmonsantov/fupsion#readme"
+}
