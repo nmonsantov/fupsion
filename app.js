@@ -6,7 +6,6 @@
 var http = require('http');
 var port = process.env.PORT || 3000;
 const DeviceDetector = require('node-device-detector');
-const detector = new DeviceDetector();
 //----------------------------------------------
 //Para versiones anteriores de Node
 if (!Object.entries)
@@ -20,6 +19,8 @@ if (!Object.entries)
       return resArray;
    };
 //---------------------------------------------   
+const detector = new DeviceDetector();
+//
 http.createServer(function (req, res) {
     //Verificar el dispositivo del cliente
     let device=viewstart(req.headers["user-agent"]);
