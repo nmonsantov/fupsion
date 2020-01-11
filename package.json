@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/nmonsantov/fupsion/issues"
   },
-  "homepage": "https://github.com/nmonsantov/fupsion#readme"
+  "homepage": "https://github.com/nmonsantov/fupsion#readme",
+  "dependencies": {
+    "node-device-detector": "^1.1.9"
+  }
 }
