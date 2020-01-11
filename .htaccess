@@ -2,3 +2,10 @@
 RewriteEngine On
 RewriteBase /
 RewriteRule ^(.*)?$ http://127.0.0.1:3000/ [P,L]
+# Node
+PassengerAppRoot "public_html"
+PassengerBaseURI "/."
+PassengerNodejs  "/usr/bin/node"
+PassengerAppType node
+PassengerStartupFile app.js
+# end node
