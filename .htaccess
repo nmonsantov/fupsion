@@ -1,11 +1,4 @@
-# Redirect traffic to your port 3000
+# Redirect traffic to your port 
 RewriteEngine On
 RewriteBase /
-RewriteRule ^(.*)?$ http://127.0.0.1:3000/ [P,L]
-# Node
-PassengerAppRoot "public_html"
-PassengerBaseURI "/."
-PassengerNodejs  "/usr/bin/node"
-PassengerAppType node
-PassengerStartupFile app.js
-# end node
+RewriteRule ^(.*)?$ http://127.0.0.1:8080/ [P,L]
