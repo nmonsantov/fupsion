@@ -2,3 +2,6 @@
 RewriteEngine On
 RewriteBase /
 RewriteRule ^(.*)?$ http://127.0.0.1:8080/ [P,L]
+#NODE
+PassengerAppType node
+passengerNodeJs "user/bin/node"
