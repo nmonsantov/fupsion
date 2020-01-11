@@ -18,7 +18,7 @@ http.createServer(function (req, res) {
     //Verificar el dispositivo del cliente
    let device=viewstart(req.headers["user-agent"]);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello Fupsion MOVALSoftware Monsanto\n'+device);
+    res.end('Hello Fupsion MOVALSoftware Marysol Mendez\n'+device);
 }).listen(port);
 
 const viewstart=function(u){
