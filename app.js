@@ -5,7 +5,7 @@
 "use strict";
 var http = require('http');
 var port = process.env.PORT || 3000;
-const Errores=require('./Models/errores.js');
+const Errores=require('./models/errores.js');
 const dbErr = new Errores();
 //Devices
 global.mobile ="smartphone";
