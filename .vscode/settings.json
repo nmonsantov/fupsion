@@ -4,5 +4,6 @@
         ".vscode{,/**}"
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/8c2e7940-7346-4688-b608-e9857193c7ef/resourceGroups/MovalSoft/providers/Microsoft.Web/sites/fupsion",
-    "appService.deploySubpath": ""
+    "appService.deploySubpath": "",
+    "workbench.iconTheme": "material-icon-theme"
 }
