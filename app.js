@@ -5,7 +5,13 @@
 "use strict";
 var http = require('http');
 var port = process.env.PORT || 3000;
-var routes = require('./areas/app/routes/index');
+const Errores=require('./Models/errores.js');
+const dbErr = new Errores();
+//Devices
+global.mobile ="smartphone";
+global.tablet ="tablet";
+global.pc ="desktop";
+
 //Definir el area,controller action y parametro por defecto
 var area_default={
     area:"app",
@@ -47,16 +53,34 @@ http.createServer(function (req, res) {
     }
     //check controller
     var controller = area+"/controllers/"+objurl.controller+"Controller.js";
+    //
     checkFile(controller,function(b){
         if(!b){
             res.writeHead(400, { 'Content-Type': 'text/plain' });
             res.end("Recurso no encontrado"+'\n'+controller);
             return;
         }
-    
-   //------------------------------------------
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end('Hello Fupsion\nNelson Monsanto\n'+device);
+        //------------------------------------------
+        //--llama el layout correspondiente del area
+        var _layout =area+"/views/shared/layout.html";
+        if(device===global.mobile){
+            _layout =area+"/views/shared/layout_mobil.html";
+        }
+        if(device===global.tablet){
+            _layout =area+"/views/shared/layout_tablet.html";
+        }
+        var layout = getFile(_layout,function(r){
+            if(r.error_number===0){
+                r.html = r.html.replace("{title}","Fupsion")
+                               .replace("{favicon}",area+"/favicon.ico");
+                res.writeHead(200,{ 'Content-Type': 'text/html' });
+                res.end(r.html);
+            }
+            else{
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end(r.error_message);
+            }
+        });
     });
 });
 }).listen(port);
@@ -64,7 +88,7 @@ http.createServer(function (req, res) {
 const viewstart=function(u){
     const result = detector.detect(u);
     let type = result.device.type.toLowerCase();
-    switch(result.device.type.toLowerCase()){
+    switch(type){
         case "smartphone":
             break;
         case "desktop":
@@ -158,5 +182,18 @@ const checkFile=function(file,callback){
     fs.access(file, fs.F_OK, (err) => {
         b = err===null;        
         callback(b);
+    });
+};
+const getFile=function(filePath,callback){
+    var fs = require("fs");
+    
+    fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+        if (!err) {
+            dbErr.html = data;
+        } else {
+            dbErr.error_number = 400;
+            dbErr.error_message = err.message;
+        }
+        callback(dbErr);
     });
 };
