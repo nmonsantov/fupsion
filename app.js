@@ -52,7 +52,7 @@ http.createServer(function (req, res) {
         return;
     }
     //check controller
-    var controller = area+"/controllers/"+objurl.controller+"Controller.js";
+    var controller = area+"/controllers/"+objurl.controller+".js";
     //
     checkFile(controller,function(b){
         if(!b){
