@@ -20,7 +20,7 @@ var area_default={
     params:{topico:0}
 };
 if(process.platform!=="win32"){
-    port =8080;
+    port =8000;
 }
 //
 const DeviceDetector = require('node-device-detector');
@@ -29,6 +29,11 @@ const detector = new DeviceDetector();
 http.createServer(function (req, res) {
     //si es un archivo regreso
     if(req.url.indexOf(".")>-1){
+        //Myme types
+        //Extraer prefijo .ico .doc .xlm etc
+        res.writeHead(200, {'Content-Type': 'image/x-icon'} );
+        //res.end();
+        console.log('favicon requested');
         return;
     }
     //Verificar el dispositivo del cliente

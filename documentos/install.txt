@@ -1,7 +1,9 @@
 install node 11.15.0 nvm install 11.15.0
 install node-dev npm install -g node-dev
 ejecutar app.js
-/home/master/.nvm/versions/node/v13.15.0/bin/node-dev app.js
+#/home/master/.nvm/versions/node/v13.15.0/bin/node-dev app.js
+/home/master/.nvm/versions/node/v13.15.0/lib/node_modules/node-dev/bin/node-dev app.js
+creamos el archivo run.sh en linux se ejecuta ./run.sh
 
 para detener node en linux
 ps aux | grep node  lista de procesos ejecutandos

@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/nmonsantov/fupsion#readme",
   "dependencies": {
-    "node-device-detector": "^1.1.9"
+    "mysql": "^2.17.1",
+    "node-device-detector": "^1.1.9",
+    "save": "^2.4.0"
   }
 }
