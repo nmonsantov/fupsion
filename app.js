@@ -11,7 +11,11 @@ const dbErr = new Errores();
 global.mobile ="smartphone";
 global.tablet ="tablet";
 global.pc ="desktop";
-
+//Estructura
+global.objurl =null;
+//
+var path = require("path");
+global.pathroot = path.dirname(require.main.filename || process.mainModule.filename);
 //Definir el area,controller action y parametro por defecto
 var area_default={
     area:"app",
@@ -36,16 +40,28 @@ http.createServer(function (req, res) {
     //Verificar el dispositivo del cliente
     let device=viewstart(req.headers["user-agent"]);
     //Verificar el area. si no tiene poner app por defecto
-    let objurl=converturl(req);
+    global.objurl=converturl(req);
     //Si viene con error
-    if(objurl.dbErr.error_number!==0){
-        res.writeHead(objurl.dbErr.error_number, { 'Content-Type': 'text/plain' });
-        res.end(objurl.dbErr.error_message+'\n'+device);
+    if(global.objurl.dbErr.error_number!==0){
+        res.writeHead(global.objurl.dbErr.error_number, { 'Content-Type': 'text/plain' });
+        res.end(global.objurl.dbErr.error_message+'\n'+device);
         return;
     }
     //verificar el area,controller,action y params
+    if(global.objurl.area!==""&&
+       global.objurl.controller!==""&&
+       global.objurl.action!==""){
+        callController(req,
+                       res,
+                       global.objurl.area,
+                       global.objurl.controller,
+                       global.objurl.action,
+                       global.objurl.params);
+                       return;
+
+    }
     //area
-    var area ="./areas/"+objurl.area;
+    var area ="./areas/"+global.objurl.area;
     checkFolder(area,function(b){
  
     if(!b){
@@ -57,6 +73,11 @@ http.createServer(function (req, res) {
     const webconfig = require(area+"/web.js");
     const web = new webconfig();
     var controller = area+"/controllers/"+web.config.controller+".js";
+    //
+    if(global.objurl.controller!==""){
+        controller = area+"/controllers/"+global.objurl.controller+".js"; 
+    }
+
     //
     checkFile(controller,function(b){
         if(!b){
@@ -75,8 +96,8 @@ http.createServer(function (req, res) {
         }
         var layout = getFile(_layout,function(r){
             if(r.error_number===0){
-                r.html = r.html.replace("{title}","Fupsion")
-                               .replace("{favicon}",area+"/favicon.ico");
+                r.html = r.html.replace("{title}","Plataforma Fupsion")
+                               .replace("{favicon}","./favicon.ico");
                 res.writeHead(200,{ 'Content-Type': 'text/html' });
                 res.end(r.html);
             }
@@ -207,7 +228,7 @@ const cacheFile=function(req,res){
     var fs = require("fs"),
         path = require("path"),
         fileStream=null;
-        var fPath = path.join(__dirname, '', req.url);
+        var fPath = path.join(global.pathroot, '', req.url);
 //--CSS        
         if(req.url.match("\.css$")){
             fileStream = fs.createReadStream(fPath, "UTF-8");
@@ -220,5 +241,80 @@ const cacheFile=function(req,res){
             res.writeHead(200, {'Content-Type': 'image/x-icon'} );
             fileStream.pipe(res);
         }
+//---JS
+        if(req.url.match("\.js$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'aplication/javascript'} );
+            fileStream.pipe(res);
+        }
+//---PNG 
+        if(req.url.match("\.png$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'image/png'} );
+            fileStream.pipe(res);
+        }
+//---JPG
+        if(req.url.match("\.jpg$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'image/jpeg'} );
+            fileStream.pipe(res);
+        }
+//---woff
+        if(req.url.match("\.woff$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'aplication/font-woff'} );
+            fileStream.pipe(res);
+        }
+//---ttf
+        if(req.url.match("\.ttf$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'aplication/font-ttf'} );
+            fileStream.pipe(res);
+        }
+//---EOT
+        if(req.url.match("\.eot$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'aplication/vnd.ms-fontobject'} );
+            fileStream.pipe(res);
+        }
+//---SVG
+        if(req.url.match("\.svg$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'application/image/svg+xml'} );
+            fileStream.pipe(res);
+        }
+
+
+
+
 
 };
+//---------------------
+//
+const callController=function(request,response,area,controller,action,params){
+    var fs = require("fs"),
+    path = require("path"),
+    a    = area!=="" ? "areas/" : "";
+    var fPath = path.join(global.pathroot, '', a+area+"/controllers/"+controller+".js");
+    //Crear el controllador maestro
+    const pathc = path.join(global.pathroot, '', 'public/controllers/main.js');
+    const main = require(pathc);
+    global.MainController = new main();
+    //Antes de ejecutar el controlador verificamos
+    global.MainController.Executing(function(result){
+        const Controller = require(fPath);
+        const c = new Controller(request,response,action,params,function(result){
+                global.MainController.Executed(function(result){
+                    global.MainController.Disponse(function(result){
+                            //remove global.MainController
+                            delete global.request;
+                            delete global.response;
+                            delete global.MainController;
+
+                    });
+
+                });
+        });
+    });
+ };
+ 

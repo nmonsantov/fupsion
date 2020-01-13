@@ -8,3 +8,6 @@ creamos el archivo run.sh en linux se ejecuta ./run.sh
 para detener node en linux
 ps aux | grep node  lista de procesos ejecutandos
 kill -9 process id donde process id es el numero del proceso en la lista
+
+para tener una version node por defecto
+nvm alias default version done version es el numero porj 11.15.0
