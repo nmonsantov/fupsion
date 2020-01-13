@@ -30,10 +30,7 @@ http.createServer(function (req, res) {
     //si es un archivo regreso
     if(req.url.indexOf(".")>-1){
         //Myme types
-        //Extraer prefijo .ico .doc .xlm etc
-        res.writeHead(200, {'Content-Type': 'image/x-icon'} );
-        //res.end();
-        console.log('favicon requested');
+        cacheFile(req,res);
         return;
     }
     //Verificar el dispositivo del cliente
@@ -57,7 +54,9 @@ http.createServer(function (req, res) {
         return;
     }
     //check controller
-    var controller = area+"/controllers/"+objurl.controller+".js";
+    const webconfig = require(area+"/web.js");
+    const web = new webconfig();
+    var controller = area+"/controllers/"+web.config.controller+".js";
     //
     checkFile(controller,function(b){
         if(!b){
@@ -201,4 +200,25 @@ const getFile=function(filePath,callback){
         }
         callback(dbErr);
     });
+};
+//-------------------------------------
+//function cache file Myme type
+const cacheFile=function(req,res){
+    var fs = require("fs"),
+        path = require("path"),
+        fileStream=null;
+        var fPath = path.join(__dirname, '', req.url);
+//--CSS        
+        if(req.url.match("\.css$")){
+            fileStream = fs.createReadStream(fPath, "UTF-8");
+            res.writeHead(200, {"Content-Type": "text/css"});
+            fileStream.pipe(res);
+        }
+//---ICO
+        if(req.url.match("\.ico$")){
+            fileStream = fs.createReadStream(fPath);
+            res.writeHead(200, {'Content-Type': 'image/x-icon'} );
+            fileStream.pipe(res);
+        }
+
 };
