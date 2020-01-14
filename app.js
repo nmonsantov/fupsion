@@ -24,7 +24,7 @@ var area_default={
     params:{topico:0}
 };
 if(process.platform!=="win32"){
-    port =8000;
+    port =47058;
 }
 //
 const DeviceDetector = require('node-device-detector');
@@ -307,7 +307,6 @@ const callController=function(request,response,area,controller,action,params){
                             delete global.MainController;
 
                     });
-
                 });
         });
     });
