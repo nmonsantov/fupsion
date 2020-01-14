@@ -24,7 +24,7 @@ var area_default={
     params:{topico:0}
 };
 if(process.platform!=="win32"){
-    port =8081;
+    port =8080;
 }
 //
 const DeviceDetector = require('node-device-detector');

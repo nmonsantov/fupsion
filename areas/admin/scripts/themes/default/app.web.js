@@ -96,8 +96,6 @@ app.control={
                 {x:"<li class='hide'><a data-activates='chat-window' class='waves-effect waves-block waves-light chat-window-collapse' href='#'><i class='mdi-action-announcement'></i></a></li>"},
                 {x:"<li><a data-activates='chat-global' class='open-chat-list waves-effect waves-block waves-light chat-collapse' href='#'><i class='mdi-action-question-answer'><small class='notification-badge chat-badge' style='display: none;'>0</small></i><span class='hide-on-med-and-up' style='position:relative; top:-10px;'>{username}</span><span class='hide-on-small-only hide-on-large-only' style='position:relative; top:-40px;'>{username}</span></a></li>"},
                 {x:"<li class='hide-on-med-and-down'><a href='javascript:void(0);' class='waves-effect waves-block waves-light toggle-fullscreen'><i class='mdi-action-settings-overscan'></i></a></li>"}
-
-
             ]
         },
 
@@ -107,7 +105,7 @@ app.control={
             app.cframe.html(this.template);
 
         },
-        template:"<div class='wrapper'>{elementos}</div>"
+        template:"<div class='wrapper'><aside id='left-sidebar-nav'></aside><section id='content'><appview></appview></div>"
     }
 };
 //
