@@ -44,7 +44,7 @@ http.createServer(function (req, res) {
     //Si viene con error
     if(global.objurl.dbErr.error_number!==0){
         res.writeHead(global.objurl.dbErr.error_number, { 'Content-Type': 'text/plain' });
-        res.end(global.objurl.dbErr.error_message+'\n'+device);
+        res.end(global.objurl.dbErr.error_message+'\n'+device+'\nMoval');
         return;
     }
     //verificar el area,controller,action y params
@@ -283,11 +283,6 @@ const cacheFile=function(req,res){
             res.writeHead(200, {'Content-Type': 'application/image/svg+xml'} );
             fileStream.pipe(res);
         }
-
-
-
-
-
 };
 //---------------------
 //

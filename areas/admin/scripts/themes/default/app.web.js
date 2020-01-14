@@ -28,6 +28,8 @@ app.create = function(){
 app.init = function(){
     //crear el header y sus elementos
     this.control.header.init();
+    //crear el cuerpo
+    this.control.main.init();
 
 };
 app.load = function(){
@@ -100,6 +102,13 @@ app.control={
         },
 
     },
+    main:{
+        init:function(){
+            app.cframe.html(this.template);
+
+        },
+        template:"<div class='wrapper'>{elementos}</div>"
+    }
 };
 //
 $(document).ready(function(){window.app.create();});
